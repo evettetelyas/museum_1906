@@ -11,5 +11,8 @@ class Patron
     @interests.push(interest)
   end
 
+  def charge(amount)
+    @spending_money -= amount
+  end
 
 end

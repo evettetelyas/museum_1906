@@ -14,6 +14,7 @@ class MuseumTest < Minitest::Test
     @imax = Exhibit.new("IMAX", 15)
     @bob = Patron.new("Bob", 20)
     @sally = Patron.new("Sally", 20)
+    @tj = Patron.new("TJ", 7)
   end
 
   def test_museum_exist
@@ -46,6 +47,10 @@ class MuseumTest < Minitest::Test
   end
 
   def test_admit_patrons
+    @dmns.add_exhibit(@gems_and_minerals)
+    @dmns.add_exhibit(@dead_sea_scrolls)
+    @bob.add_interest("Dead Sea Scrolls")
+    @bob.add_interest("Gems and Minerals")
     @dmns.admit(@bob)
     @dmns.admit(@sally)
 
@@ -59,14 +64,16 @@ class MuseumTest < Minitest::Test
     @bob.add_interest("Dead Sea Scrolls")
     @bob.add_interest("Gems and Minerals")
     @sally.add_interest("Dead Sea Scrolls")
+    @tj.add_interest("Dead Sea Scrolls")
+    @tj.add_interest("IMAX")
     @dmns.admit(@bob)
     @dmns.admit(@sally)
+    @dmns.admit(@tj)
 
     expected = {@gems_and_minerals => [@bob], @dead_sea_scrolls => [@bob, @sally], @imax => []}
 
     assert_equal expected, @dmns.patrons_by_exhibit_interest
   end
-
 
 
 

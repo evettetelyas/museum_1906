@@ -22,14 +22,19 @@ class Museum
   end
 
   def admit(patron)
-    @patrons.push(patron)
+    expensive_exhibit = recommend_exhibits(patron).max_by {|e| e.cost}
+    amt = expensive_exhibit.cost
+    if patron.spending_money >= amt
+      patron.charge(amt)
+      @patrons.push(patron)
+    end
   end
 
   def patrons_by_exhibit_interest
     interest_patron_hash = Hash.new {|h,k| h[k] = []}
     @exhibits.map do |exhibit|
       @patrons.map do |patron|
-        if patron.interests.include?(exhibit.name)
+        if patron.interests.include?(exhibit.name) && patron.spending_money >= exhibit.cost
           interest_patron_hash[exhibit] << patron
         else interest_patron_hash[exhibit]
         end
