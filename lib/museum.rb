@@ -25,4 +25,16 @@ class Museum
     @patrons.push(patron)
   end
 
+  def patrons_by_exhibit_interest
+    interest_patron_hash = Hash.new {|h,k| h[k] = []}
+    @exhibits.map do |exhibit|
+      @patrons.map do |patron|
+        if patron.interests.include?(exhibit.name)
+          interest_patron_hash[exhibit] << patron
+        else interest_patron_hash[exhibit]
+        end
+      end
+    end
+    interest_patron_hash
+  end
 end
